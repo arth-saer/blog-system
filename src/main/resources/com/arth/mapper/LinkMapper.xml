@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.arth.mapper.LinkMapper">
+
+    <insert id="insert" parameterType="link">
+        insert into link(linkName, url, OrderNo) values(#{linkName}, #{url}, #{orderNo})
+    </insert>
+
+    <update id="update" parameterType="link">
+        update link
+        set linkName = #{linkName}, url = #{url}, orderNo = #{orderNo}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="integer">
+        delete from link where id = #{id}
+    </delete>
+
+
+    <select id="selectAll" resultType="link">
+        select * from link
+    </select>
+
+    <select id="getSlice" resultType="link">
+        select * from link order by orderNo limit #{start}, #{size}
+    </select>
+
+    <select id="getTotal" resultType="integer">
+        select count(*) from link
+    </select>
+
+    <select id="selectById" resultType="link">
+        select * from link where id = #{id}
+    </select>
+
+</mapper>

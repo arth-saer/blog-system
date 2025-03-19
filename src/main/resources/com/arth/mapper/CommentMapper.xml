@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.arth.mapper.CommentMapper">
+
+    <!-- 插入评论 -->
+    <insert id="insert" parameterType="comment">
+        insert into comment (blogId, authorIp, content, commentDate, status)
+        values (#{blogId}, #{authorIp}, #{content}, now(), 0)
+    </insert>
+
+    <!-- 更新评论（只可能更新status字段） -->
+    <update id="update">
+        update comment set status = #{status}
+        where id = #{id}
+    </update>
+
+    <!-- 删除评论 -->
+    <delete id="delete" parameterType="integer">
+        delete from comment where id = #{id}
+    </delete>
+
+    <!-- 删除评论 -->
+    <delete id="deleteByBlogId" parameterType="integer">
+        delete from comment where blogId = #{blogId}
+    </delete>
+
+    <!-- 查询所有评论 -->
+    <select id="selectAll" resultType="comment">
+        select * from comment
+    </select>
+
+    <!-- 获取评论总数 -->
+    <select id="getTotal" resultType="integer">
+        select count(*) from comment
+    </select>
+
+
+    <!-- 根据 ID 查询评论 -->
+    <select id="selectById" resultType="comment">
+        select * from comment where id = #{id}
+    </select>
+
+    <!-- 根据条件查询评论 -->
+    <select id="selectByCondition" parameterType="map" resultType="comment">
+        select * from comment
+        <where>
+            <if test="blogId != null">
+                blogId = #{blogId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by commentDate
+        <if test="start != null and size != null">
+            limit #{start}, #{size}
+        </if>
+    </select>
+
+    <select id="getTotalByCondition" resultType="integer">
+        select count(*) from comment
+        <where>
+            <if test="blogId != null">
+                blogId = #{blogId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+</mapper>

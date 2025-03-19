@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.arth.mapper.BlogTypeMapper">
+
+    <insert id="insert" parameterType="blogType">
+        insert into type(typeName, OrderNo) values(#{typeName}, #{orderNo})
+    </insert>
+
+    <update id="update" parameterType="blogType">
+        update type
+        set typeName = #{typeName}, orderNo = #{orderNo}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="integer">
+        delete from type where id = #{id}
+    </delete>
+
+
+    <select id="selectAll" resultType="com.arth.pojo.BlogType">
+        select * from type
+    </select>
+
+    <select id="getSlice" resultType="com.arth.pojo.BlogType">
+        select * from type order by orderNo limit #{start}, #{size}
+    </select>
+
+    <select id="selectById" parameterType="integer" resultType="com.arth.pojo.BlogType">
+        select * from type where id = #{id}
+    </select>
+
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from type
+    </select>
+
+
+    <select id="getCount" resultType="blogType">
+        select type.id as id, typeName, orderNo, count(blog.id) as blogCount
+        from blog, type where blog.typeId = type.id
+        group by type.id order by orderNo
+    </select>
+
+</mapper>
